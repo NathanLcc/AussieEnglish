@@ -63,6 +63,15 @@ app.use((error, request, response, next) => {
   response.status(500).json({ message: "服务器暂时无法处理请求" });
 });
 
+async function startServer() {
+  await database.initializeDatabase();
+  await seedAdmin();
+  app.listen(port, "0.0.0.0", () => {
+    console.log(`Aussie Learning 已启动：http://localhost:${port}`);
+    console.log(`SQLite 数据库：${database.databasePath}`);
+  });
+}
+
 async function seedAdmin() {
   const existingAdmin = await userRepository.findUserWithPassword("admin");
   if (existingAdmin) {
@@ -71,15 +80,6 @@ async function seedAdmin() {
 
   const password = await passwordService.hashPassword("admin");
   await userRepository.createUser("admin", password, "admin");
-}
-
-async function startServer() {
-  await database.initializeDatabase();
-  await seedAdmin();
-  app.listen(port, "0.0.0.0", () => {
-    console.log(`Aussie Learning 已启动：http://localhost:${port}`);
-    console.log(`SQLite 数据库：${database.databasePath}`);
-  });
 }
 
 if (require.main === module) {
