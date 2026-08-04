@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="学习地道澳洲英语单词、词组和句子" />
+    <title>Aussie Learning · 澳洲英语学习</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ocean: {
+                50: "#effbff",
+                100: "#dff7ff",
+                500: "#0891b2",
+                600: "#0e7490",
+                700: "#155e75",
+                900: "#164e63"
+              },
+              sun: "#f4b942"
+            },
+            boxShadow: {
+              soft: "0 20px 60px -28px rgba(14, 116, 144, 0.45)"
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      [hidden] { display: none !important; }
+      body { background-image: radial-gradient(circle at 5% 0%, rgba(244, 185, 66, 0.14), transparent 28%), radial-gradient(circle at 100% 15%, rgba(8, 145, 178, 0.12), transparent 32%); }
+    </style>
+  </head>
+  <body class="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased">
+    <nav class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
+      <div class="mx-auto flex min-h-16 max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2 sm:px-6 lg:flex-nowrap lg:px-8">
+        <a href="#" class="flex items-center gap-3" aria-label="Aussie Learning 首页">
+          <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-ocean-700 text-lg font-black text-white shadow-lg shadow-ocean-700/20">A</span>
+          <span>
+            <span class="block text-sm font-black tracking-wide text-ocean-900">AUSSIE LEARNING</span>
+            <span class="hidden text-xs text-slate-500 sm:block">G'day，开始学习吧</span>
+          </span>
+        </a>
+
+        <div class="flex items-center gap-2 sm:gap-4">
+          <div id="learnerNavigation" class="hidden items-center gap-1" aria-label="学习导航">
+            <button id="learningNavButton" type="button" class="rounded-xl px-2 py-2 text-xs font-black text-slate-600 transition hover:bg-ocean-50 hover:text-ocean-700 sm:px-3 sm:text-sm">学习导航</button>
+            <button id="masteryNavButton" type="button" class="rounded-xl px-2 py-2 text-xs font-black text-slate-600 transition hover:bg-ocean-50 hover:text-ocean-700 sm:px-3 sm:text-sm">已掌握内容</button>
+          </div>
+          <span id="activeSection" class="hidden rounded-full bg-ocean-50 px-3 py-1.5 text-sm font-bold text-ocean-700 sm:inline"></span>
+          <span id="userSummary" class="hidden text-sm font-semibold text-slate-600 lg:inline"></span>
+          <button id="logoutButton" class="hidden rounded-xl border border-slate-200 px-3 py-2 text-sm font-bold text-slate-600 transition hover:border-ocean-500 hover:text-ocean-700">退出</button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+      <section id="authView" class="mx-auto grid max-w-5xl overflow-hidden rounded-3xl border border-white bg-white shadow-soft lg:grid-cols-2">
+        <div class="relative hidden min-h-[640px] overflow-hidden bg-ocean-900 p-12 text-white lg:flex lg:flex-col lg:justify-between">
+          <div class="absolute -right-28 -top-28 h-80 w-80 rounded-full border-[48px] border-white/5"></div>
+          <div class="absolute -bottom-28 -left-28 h-80 w-80 rounded-full bg-sun/10"></div>
+          <div class="relative">
+            <span class="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-bold">Australian English · Level 1—5</span>
+            <h1 class="mt-8 text-5xl font-black leading-[1.08]">Speak like<br />a true Aussie.</h1>
+            <p class="mt-6 max-w-sm text-lg leading-8 text-cyan-100">从日常单词到地道表达，用中文释义和真实语境建立你的澳洲英语词库。</p>
+          </div>
+          <div class="relative grid grid-cols-3 gap-3">
+            <div class="rounded-2xl bg-white/10 p-4"><p class="text-2xl font-black">Word</p><p class="mt-1 text-xs text-cyan-100">基础单词</p></div>
+            <div class="rounded-2xl bg-white/10 p-4"><p class="text-2xl font-black">Phrase</p><p class="mt-1 text-xs text-cyan-100">常用词组</p></div>
+            <div class="rounded-2xl bg-white/10 p-4"><p class="text-2xl font-black">Sentence</p><p class="mt-1 text-xs text-cyan-100">实用句子</p></div>
+          </div>
+        </div>
+
+        <div class="flex min-h-[640px] flex-col justify-center p-6 sm:p-10 lg:p-12">
+          <div>
+            <p class="text-sm font-black uppercase tracking-[0.2em] text-ocean-600">Welcome mate</p>
+            <h2 id="authTitle" class="mt-3 text-3xl font-black tracking-tight text-slate-900">欢迎回来</h2>
+            <p id="authDescription" class="mt-2 text-slate-500">登录后继续你的澳洲英语学习之旅。</p>
+          </div>
+
+          <div class="mt-8 grid grid-cols-2 rounded-2xl bg-slate-100 p-1.5" role="tablist" aria-label="登录或注册">
+            <button id="loginTab" class="rounded-xl bg-white px-4 py-2.5 text-sm font-black text-ocean-700 shadow-sm" role="tab" aria-selected="true">登录</button>
+            <button id="registerTab" class="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-500" role="tab" aria-selected="false">注册</button>
+          </div>
+
+          <form id="loginForm" class="mt-7 space-y-5">
+            <div>
+              <label for="loginUsername" class="mb-2 block text-sm font-bold text-slate-700">用户名</label>
+              <input id="loginUsername" name="username" type="text" autocomplete="username" required maxlength="30" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition focus:border-ocean-500 focus:bg-white focus:ring-4 focus:ring-ocean-100" placeholder="请输入用户名" />
+            </div>
+            <div>
+              <label for="loginPassword" class="mb-2 block text-sm font-bold text-slate-700">密码</label>
+              <input id="loginPassword" name="password" type="password" autocomplete="current-password" required maxlength="100" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition focus:border-ocean-500 focus:bg-white focus:ring-4 focus:ring-ocean-100" placeholder="请输入密码" />
+            </div>
+            <div>
+              <div class="mb-2 flex items-center justify-between gap-3">
+                <label for="loginCaptchaAnswer" class="text-sm font-bold text-slate-700">计算验证码：<span id="loginCaptchaQuestion" class="font-black text-ocean-700">加载中...</span></label>
+                <button id="loginCaptchaRefreshButton" type="button" class="text-xs font-bold text-ocean-700 hover:text-ocean-500">换一道</button>
+              </div>
+              <input id="loginCaptchaAnswer" name="captchaAnswer" type="number" inputmode="numeric" required class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition focus:border-ocean-500 focus:bg-white focus:ring-4 focus:ring-ocean-100" placeholder="请输入计算结果" />
+            </div>
+            <button type="submit" class="w-full rounded-2xl bg-ocean-700 px-5 py-3.5 font-black text-white shadow-lg shadow-ocean-700/20 transition hover:-translate-y-0.5 hover:bg-ocean-600 disabled:cursor-wait disabled:opacity-60">登录账号</button>
+            <p class="text-center text-xs text-slate-400">初始管理员：admin / admin</p>
+          </form>
+
+          <form id="registerForm" class="mt-7 hidden space-y-5">
+            <div>
+              <label for="registerUsername" class="mb-2 block text-sm font-bold text-slate-700">用户名</label>
+              <input id="registerUsername" name="username" type="text" autocomplete="username" required minlength="3" maxlength="30" pattern="[a-zA-Z0-9]+" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition focus:border-ocean-500 focus:bg-white focus:ring-4 focus:ring-ocean-100" placeholder="3—30 位英文字母或数字" />
+            </div>
+            <div>
+              <label for="registerPassword" class="mb-2 block text-sm font-bold text-slate-700">密码</label>
+              <input id="registerPassword" name="password" type="password" autocomplete="new-password" required minlength="6" maxlength="100" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition focus:border-ocean-500 focus:bg-white focus:ring-4 focus:ring-ocean-100" placeholder="至少 6 个字符" />
+            </div>
+            <div>
+              <label for="confirmPassword" class="mb-2 block text-sm font-bold text-slate-700">确认密码</label>
+              <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required minlength="6" maxlength="100" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition focus:border-ocean-500 focus:bg-white focus:ring-4 focus:ring-ocean-100" placeholder="再次输入密码" />
+            </div>
+            <div>
+              <div class="mb-2 flex items-center justify-between gap-3">
+                <label for="registerCaptchaAnswer" class="text-sm font-bold text-slate-700">计算验证码：<span id="registerCaptchaQuestion" class="font-black text-ocean-700">加载中...</span></label>
+                <button id="registerCaptchaRefreshButton" type="button" class="text-xs font-bold text-ocean-700 hover:text-ocean-500">换一道</button>
+              </div>
+              <input id="registerCaptchaAnswer" name="captchaAnswer" type="number" inputmode="numeric" required class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 outline-none transition focus:border-ocean-500 focus:bg-white focus:ring-4 focus:ring-ocean-100" placeholder="请输入计算结果" />
+            </div>
+            <button type="submit" class="w-full rounded-2xl bg-ocean-700 px-5 py-3.5 font-black text-white shadow-lg shadow-ocean-700/20 transition hover:-translate-y-0.5 hover:bg-ocean-600 disabled:cursor-wait disabled:opacity-60">创建学习账号</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="lobbyView" class="hidden">
+        <div id="levelNavigationView">
+          <div class="overflow-hidden rounded-3xl bg-ocean-900 px-6 py-10 text-white shadow-soft sm:px-10 lg:flex lg:items-end lg:justify-between lg:px-14 lg:py-14">
+            <div>
+              <span class="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-cyan-100">学习旅程 · 当前 Level <span id="lobbyLevel" class="ml-1">1</span></span>
+              <h1 class="mt-6 text-4xl font-black sm:text-5xl">G'day, <span id="lobbyUsername"></span>!</h1>
+              <p class="mt-4 max-w-2xl text-lg leading-8 text-cyan-100">每次随机学习一条；每看完 20 条，从刚学内容中随机抽取 10 题，达到 70% 才能继续。</p>
+            </div>
+            <div class="mt-8 rounded-2xl bg-white/10 px-6 py-5 lg:mt-0">
+              <p class="text-xs font-bold uppercase tracking-widest text-cyan-200">Current journey</p>
+              <p class="mt-2 text-2xl font-black">Level <span id="journeyLevel">1</span> / 5</p>
+            </div>
+          </div>
+
+          <div class="mb-5 mt-10">
+            <p class="text-sm font-black uppercase tracking-[0.2em] text-ocean-600">Choose your level</p>
+            <h2 class="mt-2 text-3xl font-black tracking-tight text-slate-900">选择学习难度</h2>
+          </div>
+          <div id="levelCards" class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3"></div>
+        </div>
+
+        <div id="learningPreviewView" class="hidden">
+          <button id="backToLevelsButton" type="button" class="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-black text-slate-500 transition hover:bg-white hover:text-ocean-700">← 返回等级选择</button>
+
+          <div class="mt-5 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p class="text-sm font-black uppercase tracking-[0.2em] text-ocean-600">Guided learning</p>
+              <h1 id="previewLevelTitle" class="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">Level 1 · 第 1 批</h1>
+              <p id="previewTermCount" class="mt-2 text-slate-500">本批 1 / 20 · 总进度 1 / 200</p>
+            </div>
+            <p class="max-w-md text-sm leading-6 text-slate-500">随机顺序已保存。退出或刷新后，再次进入这个 Level 会从当前位置继续。</p>
+          </div>
+
+          <div class="mt-6 h-2 overflow-hidden rounded-full bg-slate-200" aria-hidden="true">
+            <div id="learningProgressBar" class="h-full rounded-full bg-ocean-600 transition-all duration-300" style="width: 0%"></div>
+          </div>
+
+          <article id="singleTermCard" class="mx-auto mt-8 max-w-3xl rounded-3xl border border-slate-200 bg-white p-6 shadow-soft sm:p-10">
+            <div class="flex items-center justify-between gap-4">
+              <span id="singleTermType" class="inline-flex rounded-full bg-ocean-50 px-3 py-1.5 text-xs font-black text-ocean-700">单词</span>
+              <span class="text-xs font-bold text-slate-400">随机学习顺序</span>
+            </div>
+            <h2 id="singleTermEnglish" class="mt-8 break-words text-3xl font-black leading-tight text-slate-900 sm:text-4xl"></h2>
+            <p class="mt-8 text-xs font-black uppercase tracking-widest text-slate-400">中文释义</p>
+            <p id="singleTermChinese" class="mt-2 text-xl font-bold text-ocean-800"></p>
+            <p id="singleTermExample" class="mt-7 rounded-2xl bg-slate-50 p-5 text-sm italic leading-7 text-slate-600"></p>
+          </article>
+
+          <div id="emptyPreview" class="mt-8 hidden rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+            <p class="text-4xl">🦘</p>
+            <h2 class="mt-4 text-xl font-black text-slate-900">这个等级还没有学习内容</h2>
+            <p class="mt-2 text-sm text-slate-500">请联系管理员添加内容后再来测验。</p>
+          </div>
+
+          <div class="sticky bottom-4 z-20 mx-auto mt-6 grid max-w-3xl grid-cols-2 gap-3 rounded-3xl border border-white/80 bg-white/90 p-4 shadow-soft backdrop-blur-xl sm:px-6">
+            <button id="previousTermButton" type="button" class="rounded-2xl border border-slate-200 px-6 py-3.5 font-black text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40">← 上一个</button>
+            <button id="nextTermButton" type="button" class="rounded-2xl bg-ocean-700 px-6 py-3.5 font-black text-white shadow-lg shadow-ocean-700/20 transition hover:-translate-y-0.5 hover:bg-ocean-600 disabled:cursor-not-allowed disabled:opacity-50">下一个 →</button>
+          </div>
+        </div>
+
+        <div id="quizView" class="hidden">
+          <div class="mx-auto max-w-3xl">
+            <div class="flex items-center justify-between gap-4">
+              <button id="exitQuizButton" type="button" class="rounded-xl px-3 py-2 text-sm font-black text-slate-500 transition hover:bg-white hover:text-ocean-700">← 退出测验</button>
+              <div class="flex items-center gap-3">
+                <span id="quizLevelLabel" class="rounded-full bg-ocean-50 px-3 py-1.5 text-xs font-black text-ocean-700">Level 1</span>
+                <span id="quizProgress" class="min-w-12 text-right text-sm font-black text-slate-700">1/10</span>
+              </div>
+            </div>
+
+            <div class="mt-5 h-2 overflow-hidden rounded-full bg-slate-200" aria-hidden="true">
+              <div id="quizProgressBar" class="h-full rounded-full bg-ocean-600 transition-all duration-300" style="width: 10%"></div>
+            </div>
+
+            <div id="quizQuestionPanel" class="mt-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-soft sm:p-10">
+              <p id="quizDirection" class="text-center text-xs font-black uppercase tracking-[0.18em] text-ocean-600">看英文 · 选择中文释义</p>
+              <h1 id="quizPrompt" class="mx-auto mt-6 max-w-2xl break-words text-center text-3xl font-black leading-tight text-slate-900 sm:text-4xl"></h1>
+              <div id="quizOptions" class="mt-9 grid gap-3 sm:grid-cols-2"></div>
+              <p id="answerFeedback" class="mt-5 min-h-6 text-center text-sm font-black" role="status" aria-live="polite"></p>
+            </div>
+
+            <div id="quizResultPanel" class="mt-8 hidden overflow-hidden rounded-3xl border border-slate-200 bg-white text-center shadow-soft">
+              <div class="bg-ocean-900 px-6 py-10 text-white sm:py-12">
+                <p class="text-sm font-black uppercase tracking-[0.2em] text-cyan-200">Quiz complete</p>
+                <h1 class="mt-4 text-4xl font-black">测验完成！</h1>
+                <p class="mt-5 text-lg text-cyan-100">答题位置与结果会实时保存，达到 70% 才能继续</p>
+              </div>
+              <div class="px-6 py-9 sm:px-10">
+                <p class="text-5xl font-black text-ocean-700"><span id="quizScore">0</span><span class="text-2xl text-slate-400"> / <span id="quizTotal">10</span></span></p>
+                <p id="quizResultTitle" class="mt-5 text-lg font-black text-slate-900"></p>
+                <p id="quizResultMessage" class="mt-2 font-bold text-slate-600"></p>
+                <div class="mt-8 grid gap-3 sm:grid-cols-3">
+                  <button id="quizBackToLevelsButton" type="button" class="rounded-2xl border border-slate-200 px-4 py-3 font-bold text-slate-600 hover:bg-slate-50">返回等级</button>
+                  <button id="quizReviewButton" type="button" class="rounded-2xl border border-ocean-200 px-4 py-3 font-bold text-ocean-700 hover:bg-ocean-50">继续学习下一批</button>
+                  <button id="retryQuizButton" type="button" class="rounded-2xl bg-ocean-700 px-4 py-3 font-black text-white hover:bg-ocean-600">重新挑战本批</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="masteredView" class="hidden">
+        <div class="overflow-hidden rounded-3xl bg-ocean-900 px-6 py-10 text-white shadow-soft sm:px-10 lg:px-14 lg:py-14">
+          <p class="text-sm font-black uppercase tracking-[0.2em] text-cyan-200">My mastered content</p>
+          <h1 class="mt-4 text-4xl font-black sm:text-5xl">已掌握内容</h1>
+          <p id="masteredContentCount" class="mt-4 text-lg text-cyan-100">正在读取你的掌握本...</p>
+        </div>
+
+        <div id="masteredContentLoading" class="mt-8 rounded-3xl border border-slate-200 bg-white px-6 py-14 text-center font-bold text-slate-500">正在加载已掌握内容...</div>
+        <div id="emptyMasteredContent" class="mt-8 hidden rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+          <p class="text-4xl">📘</p>
+          <h2 class="mt-4 text-xl font-black text-slate-900">掌握本还是空的</h2>
+          <p class="mt-2 text-sm text-slate-500">完成测验后，答对的单词、词组和句子会出现在这里。</p>
+        </div>
+        <div id="masteredContentGroups" class="mt-8 grid gap-6"></div>
+      </section>
+
+      <section id="adminView" class="hidden">
+        <div class="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p class="text-sm font-black uppercase tracking-[0.2em] text-ocean-600">Admin workspace</p>
+            <h1 class="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">内容管理</h1>
+            <p class="mt-2 text-slate-500">统一维护学习系统中的单词、词组与句子。</p>
+          </div>
+          <button id="openTermFormButton" class="rounded-2xl bg-ocean-700 px-5 py-3 font-black text-white shadow-lg shadow-ocean-700/20 transition hover:bg-ocean-600">＋ 添加学习内容</button>
+        </div>
+
+        <div id="termFormPanel" class="mb-8 hidden rounded-3xl border border-ocean-100 bg-white p-5 shadow-soft sm:p-8">
+          <div class="flex items-center justify-between">
+            <div><p class="text-xs font-black uppercase tracking-widest text-ocean-600">Term editor</p><h2 id="termFormTitle" class="mt-1 text-2xl font-black">添加学习内容</h2></div>
+            <button id="closeTermFormButton" type="button" class="rounded-xl p-2 text-2xl leading-none text-slate-400 hover:bg-slate-100 hover:text-slate-700" aria-label="关闭表单">×</button>
+          </div>
+
+          <form id="termForm" class="mt-7 grid gap-5 md:grid-cols-2">
+            <div>
+              <label for="termContent" class="mb-2 block text-sm font-bold">英文内容</label>
+              <input id="termContent" required maxlength="300" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-ocean-500 focus:bg-white focus:ring-4 focus:ring-ocean-100" placeholder="例如：arvo" />
+            </div>
+            <div>
+              <label for="meaning" class="mb-2 block text-sm font-bold">中文释义</label>
+              <input id="meaning" required maxlength="300" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-ocean-500 focus:bg-white focus:ring-4 focus:ring-ocean-100" placeholder="例如：下午" />
+            </div>
+            <div class="md:col-span-2">
+              <label for="example" class="mb-2 block text-sm font-bold">澳洲例句</label>
+              <textarea id="example" required maxlength="1000" rows="3" class="w-full resize-y rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-ocean-500 focus:bg-white focus:ring-4 focus:ring-ocean-100" placeholder="例如：See you this arvo!"></textarea>
+            </div>
+            <div>
+              <label for="termType" class="mb-2 block text-sm font-bold">类型</label>
+              <select id="termType" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-ocean-500 focus:ring-4 focus:ring-ocean-100">
+                <option value="word">单词</option>
+                <option value="phrase">词组</option>
+                <option value="sentence">句子</option>
+              </select>
+            </div>
+            <div>
+              <label for="level" class="mb-2 block text-sm font-bold">难度等级</label>
+              <select id="level" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-ocean-500 focus:ring-4 focus:ring-ocean-100">
+                <option value="1">Level 1 · 入门</option><option value="2">Level 2 · 基础</option><option value="3">Level 3 · 中级</option><option value="4">Level 4 · 进阶</option><option value="5">Level 5 · 熟练</option>
+              </select>
+            </div>
+            <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row md:col-span-2 md:justify-end">
+              <button id="cancelTermButton" type="button" class="rounded-2xl border border-slate-200 px-5 py-3 font-bold text-slate-600 hover:bg-slate-50">取消</button>
+              <button type="submit" class="rounded-2xl bg-ocean-700 px-6 py-3 font-black text-white hover:bg-ocean-600 disabled:cursor-wait disabled:opacity-60">保存内容</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+          <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-7">
+            <div><h2 class="font-black text-slate-900">内容列表</h2><p id="termCount" class="mt-1 text-xs text-slate-400">共 0 条内容</p></div>
+            <button id="refreshTermsButton" class="rounded-xl border border-slate-200 px-3 py-2 text-sm font-bold text-slate-500 hover:text-ocean-700">刷新</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[860px] text-left">
+              <thead class="bg-slate-50 text-xs font-black uppercase tracking-wider text-slate-500"><tr><th class="px-6 py-4">英文内容</th><th class="px-6 py-4">中文释义</th><th class="px-6 py-4">澳洲例句</th><th class="px-6 py-4">类型</th><th class="px-6 py-4">等级</th><th class="px-6 py-4 text-right">操作</th></tr></thead>
+              <tbody id="termsTableBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+          <div id="emptyTerms" class="hidden px-6 py-16 text-center"><p class="text-4xl">🦘</p><h3 class="mt-4 text-lg font-black">还没有学习内容</h3><p class="mt-1 text-sm text-slate-500">点击“添加学习内容”创建第一条记录。</p></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="pointer-events-none fixed bottom-6 left-1/2 z-50 hidden -translate-x-1/2 rounded-2xl px-5 py-3 text-sm font-bold text-white shadow-2xl" role="status" aria-live="polite"></div>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>
