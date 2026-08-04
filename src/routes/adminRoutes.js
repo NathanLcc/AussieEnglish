@@ -1,11 +1,38 @@
 const express = require("express");
+const progressRepository = require("../repositories/progressRepository");
 const termRepository = require("../repositories/termRepository");
+const userRepository = require("../repositories/userRepository");
 const { requireAdmin } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 const allowedTypes = ["word", "phrase", "sentence"];
 
 router.use(requireAdmin);
+
+router.get("/users", async (request, response, next) => {
+  try {
+    const users = await userRepository.findAllUsers();
+    const progressRows = await progressRepository.findAllProgress();
+    const progressByUserId = groupProgressByUserId(progressRows);
+    const publicUsers = [];
+
+    for (let userIndex = 0; userIndex < users.length; userIndex += 1) {
+      const user = users[userIndex];
+
+      publicUsers.push({
+        id: user.id,
+        username: user.username,
+        role: user.role,
+        currentLevel: user.currentLevel,
+        progress: progressByUserId.get(user.id) || []
+      });
+    }
+
+    response.json({ users: publicUsers });
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.get("/terms", async (request, response, next) => {
   try {
@@ -104,6 +131,43 @@ function parseId(value) {
   }
 
   return id;
+}
+
+function toPublicProgress(row) {
+  const termOrder = parseJsonArray(row.termOrder);
+  const totalTerms = termOrder.length;
+  const position = totalTerms === 0 ? 0 : Math.min(row.currentPosition + 1, totalTerms);
+
+  return {
+    level: row.level,
+    phase: row.phase,
+    position,
+    totalTerms,
+    updatedAt: row.updatedAt
+  };
+}
+
+function groupProgressByUserId(rows) {
+  const grouped = new Map();
+
+  for (let index = 0; index < rows.length; index += 1) {
+    const row = rows[index];
+    if (!grouped.has(row.userId)) {
+      grouped.set(row.userId, []);
+    }
+    grouped.get(row.userId).push(toPublicProgress(row));
+  }
+
+  return grouped;
+}
+
+function parseJsonArray(value) {
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
 }
 
 function validateTerm(body) {

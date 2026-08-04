@@ -2,7 +2,7 @@ import { api } from "./core/api.js";
 import { getUser, setUser } from "./core/state.js";
 import { showToast } from "./core/ui.js";
 import { initializeAuth } from "./features/auth.js";
-import { initializeAdmin, loadTerms } from "./features/admin.js";
+import { initializeAdmin, loadTerms, loadUsers } from "./features/admin.js";
 import {
   initializeLevelNavigation,
   renderLevelNavigation,
@@ -43,11 +43,12 @@ function showApplication(user) {
   if (user.role === "admin") {
     document.querySelector("#learnerNavigation").classList.add("hidden");
     document.querySelector("#learnerNavigation").classList.remove("flex");
-    document.querySelector("#activeSection").textContent = "内容管理";
+    document.querySelector("#activeSection").textContent = "管理员控制台";
     setView("adminView", true);
     setView("lobbyView", false);
     setView("masteredView", false);
     loadTerms();
+    loadUsers();
     return;
   }
 

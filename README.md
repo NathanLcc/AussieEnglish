@@ -67,9 +67,10 @@ npm start
 
 登录和注册前必须先请求验证码。验证码答案保存在服务端会话中，每次登录或注册尝试后立即失效。
 
-### 管理员内容管理
+### 管理员功能
 
 - `GET /api/admin/terms`：内容列表
+- `GET /api/admin/users`：只读查看全部用户及其学习进度
 - `GET /api/admin/terms/:id`：内容详情
 - `POST /api/admin/terms`：添加内容
 - `PUT /api/admin/terms/:id`：更新内容

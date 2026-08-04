@@ -32,6 +32,15 @@ async function findProgressByUserId(userId) {
   );
 }
 
+async function findAllProgress() {
+  return database.all(
+    `SELECT id, userId, level, termOrder, currentPosition,
+            batchStartPosition, phase, quizState, updatedAt
+     FROM userLearningProgress
+     ORDER BY userId ASC, level ASC`
+  );
+}
+
 async function updateProgress(progress) {
   await database.run(
     `UPDATE userLearningProgress
@@ -53,6 +62,7 @@ async function updateProgress(progress) {
 
 module.exports = {
   createProgress,
+  findAllProgress,
   findProgress,
   findProgressByUserId,
   updateProgress

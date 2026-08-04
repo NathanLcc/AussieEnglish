@@ -28,6 +28,17 @@ async function findUserWithPassword(username) {
   );
 }
 
+async function findAllUsers() {
+  return database.all(
+    `SELECT id, username, role, currentLevel
+     FROM users
+     ORDER BY
+       CASE role WHEN 'user' THEN 1 ELSE 2 END ASC,
+       username COLLATE NOCASE ASC,
+       id ASC`
+  );
+}
+
 async function promoteCurrentLevel(id, expectedLevel) {
   const result = await database.run(
     `UPDATE users
@@ -39,4 +50,10 @@ async function promoteCurrentLevel(id, expectedLevel) {
   return result.changes > 0;
 }
 
-module.exports = { createUser, findUserById, findUserWithPassword, promoteCurrentLevel };
+module.exports = {
+  createUser,
+  findAllUsers,
+  findUserById,
+  findUserWithPassword,
+  promoteCurrentLevel
+};
